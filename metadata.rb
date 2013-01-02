@@ -10,3 +10,6 @@ recipe "rails_application", "This recipe prepare the target machine to host any 
 
 depends 'nginx', '~> 1.1.2'
 depends 'apt', '~> 1.7.0'
+depends 'mysql', '~> 2.1.0'
+depends 'database', '1.3.6'
+depends 'mysql_charset', '~> 0.0.1'

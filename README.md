@@ -45,13 +45,14 @@ New Relic related attributes
 Recipes
 =======
 
-This cookbook provides two main recipes for installing Nginx.
+This cookbook provides two main recipes for installing and configuring rails applications.
 
 * default.rb: This recipe is used to prepare the target machine to allow
  execution of rails applications
 * nginx.rb: This recipe is used to configure nginx as reverse proxy for the
  rails applications installed
 * new_relic.rb: This recipe is used to install the [New Relic Server Monitor](https://newrelic.com/docs/server/) software
+* mysql.rb: This recipe configures MySQL database database and users for the given applications
 
 Data Bags
 =========
@@ -63,7 +64,21 @@ is rails_applications, it could be configured using bags like this one:
       "id"          : "application_id",
       "app_name"    : "my_app_name",
       "server_name" : "www.example.org",
-      "aliases"     : []
+      "aliases"     : [],
+      "mysql": {
+          "host"      : "localhost",
+          "database"  : "database_name",
+          "username"  : "application_username",
+          "password"  : "supersecret",
+          "privileges": ["select", "insert"],
+          "encoding"  : "utf8",
+          "collation" : "utf8_unicode_ci",
+          "admin_credentials": {
+            "host"     : "hostname",
+            "username" : "admin_user",
+            "password" : "admin_password"
+          }
+      }
     }
 
 The `app_name` setting is required and is used as folder name for the application, so it should
@@ -71,6 +86,10 @@ be something that can be used for this purpose. It should be unique across all a
  it must not contain spaces or other non alphanumeric chars.
 
 `server_name` and `aliases` are used in nginx configuration for the virtual host template.
+
+The whole `mysql` block is used to configure database and user for the application.
+
+`admin_credentials` are used to actually create the user. If not given defaults are used.
 
 Usage
 =====
@@ -81,6 +100,10 @@ Dependencies
 ============
 
 * `nginx`: opscode nginx cookbook used in `rails_application::nginx`
+* `apt`: opscode apt cookbook, used in `rails_application::new_relic`
+* `mysql`: opscode mysql cookbook, used in `rails_application::mysql`
+* `database`: opscode database cookbook, used in `rails_application::mysql`
+* `mysql_charset`: mysql charset cookbook, used in `rails_application::mysql`
 
 License and Author
 ==================
