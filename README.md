@@ -32,6 +32,7 @@ Here are the configuration attributes used in this cookbooks
 * `node['rails_application']['user']` - User that Rails applications will run as.
 * `node['rails_application']['group]` - Group for Rails applications.
 * `node['rails_application']['home']` - Home directory for the created user
+* `node['rails_application']['applications_bag']` - Databag name for applications
 
 Recipes
 =======
@@ -43,6 +44,15 @@ This cookbook provides two main recipes for installing Nginx.
 
 Data Bags
 =========
+
+This cookbook read infos about applications to create from databags. The default bag used
+is rails_applications, it could be configured using bags like this one:
+
+    {
+      "id"         : "application_id",
+      "app_name"   : "my_app_name",
+      "app_folder" : "my_app_folder"
+    }
 
 Usage
 =====

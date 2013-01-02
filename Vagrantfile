@@ -47,6 +47,9 @@ Vagrant::Config.run do |config|
   config.ssh.timeout   = 120
 
   config.vm.provision :chef_solo do |chef|
+
+    chef.data_bags_path = "data_bags"
+
     chef.json = {
       :mysql => {
         :server_root_password => 'rootpass',
