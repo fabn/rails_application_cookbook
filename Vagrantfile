@@ -18,8 +18,8 @@ Vagrant::Config.run do |config|
 
   config.vm.host_name = "rails_application-berkshelf"
 
-  config.vm.box = "Berkshelf-CentOS-6.3-x86_64-minimal"
-  config.vm.box_url = "https://dl.dropbox.com/u/31081437/Berkshelf-CentOS-6.3-x86_64-minimal.box"
+  config.vm.box = "squeeze32"
+  config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/glassesdirect-boxen/Debian/Debian_Lenny_32.box"
 
   # Boot with a GUI so you can see the screen. (Default is headless)
   # config.vm.boot_mode = :gui
