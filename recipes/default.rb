@@ -31,9 +31,9 @@ data_bag(bag_name).each do |app|
   # fetch data from item
   app_data = data_bag_item(bag_name, app)
   # find an usable folder name
-  app_folder = app_data['app_folder'] || app_data['app_name'] || app_data['id']
+  app_name = app_data['app_name'] || app_data['id']
   # create folder for application
-  directory "#{node[:rails_application][:apps_path]}/#{app_folder}" do
+  directory "#{node[:rails_application][:apps_path]}/#{app_name}" do
     owner node[:rails_application][:user]
     group node[:rails_application][:group]
     mode '0755'

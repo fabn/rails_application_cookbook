@@ -34,6 +34,10 @@ Here are the configuration attributes used in this cookbooks
 * `node['rails_application']['home']` - Home directory for the created user
 * `node['rails_application']['applications_bag']` - Databag name for applications
 
+Nginx related attributes
+
+* `node['rails_application']['nginx']['socket_path']` - Path where to store unix socket when nginx is used
+
 Recipes
 =======
 
@@ -47,14 +51,21 @@ This cookbook provides two main recipes for installing Nginx.
 Data Bags
 =========
 
-This cookbook read infos about applications to create from databags. The default bag used
+This cookbook reads infos about applications to create from databags. The default bag used
 is rails_applications, it could be configured using bags like this one:
 
     {
-      "id"         : "application_id",
-      "app_name"   : "my_app_name",
-      "app_folder" : "my_app_folder"
+      "id"          : "application_id",
+      "app_name"    : "my_app_name",
+      "server_name" : "www.example.org",
+      "aliases"     : []
     }
+
+The `app_name` setting is required and is used as folder name for the application, so it should
+be something that can be used for this purpose. It should be unique across all applications and
+ it must not contain spaces or other non alphanumeric chars.
+
+`server_name` and `aliases` are used in nginx configuration for the virtual host template.
 
 Usage
 =====

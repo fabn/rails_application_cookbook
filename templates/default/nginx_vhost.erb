@@ -1,0 +1,43 @@
+upstream <%= @app_name -%> {
+  server unix:<%= @app_socket -%> fail_timeout=0;
+}
+
+server {
+  listen 80;
+  client_max_body_size 4G;
+  server_name <%= @server_names.join(' ') -%>;
+
+  keepalive_timeout 5;
+
+  root <%= @app_path -%>/current/public;
+
+  # Maintenance mode enabled if maintenance file is found
+  if (-f $document_root/system/maintenance.html) {
+    return 503;
+  }
+  error_page 503 @maintenance_<%= @app_name -%>;
+  location @maintenance_<%= @app_name -%> {
+    rewrite  ^(.*)$  /system/maintenance.html last;
+    break;
+  }
+
+  try_files $uri/index.html $uri @unicorn_<%= @app_name -%>;
+
+  location @unicorn_<%= @app_name -%> {
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_redirect off;
+      proxy_pass http://<%= @app_name -%>;
+  }
+
+  error_page 500 502 503 504 /500.html;
+
+  location ~ ^/assets/ {
+    expires 1y;
+    add_header Cache-Control public;
+
+    add_header ETag "";
+    break;
+  }
+
+}

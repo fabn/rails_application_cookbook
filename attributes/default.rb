@@ -12,3 +12,6 @@ default[:rails_application][:apps_path] = default[:rails_application][:home]
 
 # This is the name of the data bag used to retrieve applications
 default[:rails_application][:applications_bag] = 'rails_applications'
+
+# Nginx attributes
+default[:rails_application][:nginx][:socket_path] = '/tmp'
