@@ -16,8 +16,6 @@ Vagrant::Config.run do |config|
   # to skip installing and copying to Vagrant's shelf.
   # config.berkshelf.except = []
 
-  config.vm.host_name = "rails_application-berkshelf"
-
   config.vm.box = "squeeze32"
   config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/glassesdirect-boxen/Debian/Debian_Lenny_32.box"
 
