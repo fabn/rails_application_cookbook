@@ -59,6 +59,7 @@ Vagrant::Config.run do |config|
     }
 
     chef.run_list = [
+      "apt",
       "recipe[rails_application::nginx]"
     ]
   end

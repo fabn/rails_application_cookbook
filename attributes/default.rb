@@ -15,3 +15,6 @@ default[:rails_application][:applications_bag] = 'rails_applications'
 
 # Nginx attributes
 default[:rails_application][:nginx][:socket_path] = '/tmp'
+
+# Newrelic attributes
+default[:rails_application][:new_relic][:license_key] = false

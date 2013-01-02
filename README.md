@@ -38,6 +38,10 @@ Nginx related attributes
 
 * `node['rails_application']['nginx']['socket_path']` - Path where to store unix socket when nginx is used
 
+New Relic related attributes
+
+* `node['rails_application']['new_relic']['license_key']` - Used with New Relic Server Monitor
+
 Recipes
 =======
 
@@ -47,6 +51,7 @@ This cookbook provides two main recipes for installing Nginx.
  execution of rails applications
 * nginx.rb: This recipe is used to configure nginx as reverse proxy for the
  rails applications installed
+* new_relic.rb: This recipe is used to install the [New Relic Server Monitor](https://newrelic.com/docs/server/) software
 
 Data Bags
 =========
