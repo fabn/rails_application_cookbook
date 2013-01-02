@@ -41,6 +41,8 @@ This cookbook provides two main recipes for installing Nginx.
 
 * default.rb: This recipe is used to prepare the target machine to allow
  execution of rails applications
+* nginx.rb: This recipe is used to configure nginx as reverse proxy for the
+ rails applications installed
 
 Data Bags
 =========
@@ -58,6 +60,11 @@ Usage
 =====
 
 Include the recipe on your node or role that needs execution of rails applications
+
+Dependencies
+============
+
+* `nginx`: opscode nginx cookbook used in `rails_application::nginx`
 
 License and Author
 ==================

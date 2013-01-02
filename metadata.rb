@@ -8,3 +8,5 @@ version          "0.1.0"
 
 recipe "rails_application", "This recipe prepare the target machine to host any number of rails applications"
 
+depends 'nginx', '~> 1.1.2'
+

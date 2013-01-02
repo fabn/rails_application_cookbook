@@ -59,7 +59,7 @@ Vagrant::Config.run do |config|
     }
 
     chef.run_list = [
-      "recipe[rails_application::default]"
+      "recipe[rails_application::nginx]"
     ]
   end
 end
