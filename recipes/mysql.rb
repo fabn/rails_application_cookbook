@@ -13,10 +13,18 @@ bag_name = node[:rails_application][:applications_bag]
 
 # Return admin credentials that should be used from this databag item
 def admin_credentials data_bag_item
-  data_bag_item['admin_credentials'] ?
-      # uses symbols instead of strings as keys in the returned version from databag
-      mysql_data['admin_credentials'].inject({}) { |h, el| h.update(el.first.to_sym => el.last) } :
-      {:host => "localhost", :username => 'root', :password => node['mysql']['server_root_password']}
+  # data from databag
+  # uses symbols instead of strings for keys
+  given = mysql_data['admin_credentials'].inject({}) do |h, el|
+    h.update(el.first.to_sym => el.last)
+  end if data_bag_item['admin_credentials']
+  # default value
+  given ||= {}
+  # use defaults where data not provided
+  {
+      :host => "localhost", :username => 'root',
+      :password => node['mysql']['server_root_password']
+  }.merge(given)
 end
 
 # Don't install unless at least an app connect to localhost
@@ -51,8 +59,8 @@ data_bag(bag_name).each do |app|
     # create database using admin credentials
     mysql_database mysql_data['database'] do
       connection admin_credentials
-      encoding mysql_data['encoding']
-      collation mysql_data['collation']
+      encoding mysql_data['encoding'] || 'utf8'
+      collation mysql_data['collation'] || 'utf8_general_ci'
       action :create
     end
     # grant privileges to the given user on the given database
@@ -62,7 +70,7 @@ data_bag(bag_name).each do |app|
       database_name mysql_data['database']
       # hostname vary if accessed from localhost or through hostname
       host %w(localhost 127.0.0.1).include?(mysql_data['host']) ? 'localhost' : node['fqdn']
-      privileges mysql_data['privileges']
+      privileges mysql_data['privileges'] || :all
       action :grant
     end
   end
