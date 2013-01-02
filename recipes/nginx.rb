@@ -15,10 +15,6 @@ include_recipe "nginx"
 # Fetch applications bag name
 bag_name = node[:rails_application][:applications_bag]
 
-
-# Fetch applications bag name
-bag_name = node[:rails_application][:applications_bag]
-
 # create application folders provided as data_bag items
 data_bag(bag_name).each do |app|
   # fetch data from item
