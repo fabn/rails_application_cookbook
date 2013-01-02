@@ -1,5 +1,7 @@
 # rails_application cookbook
 
+Prepare the machine for a capistrano deployment of a rails application
+
 # Requirements
 
 # Usage
@@ -10,4 +12,4 @@
 
 # Author
 
-Author:: YOUR_NAME (<YOUR_EMAIL>)
+Author:: Fabio Napoleoni (<f.napoleoni@gmail.com>)

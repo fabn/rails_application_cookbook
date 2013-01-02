@@ -1,8 +1,8 @@
 name             "rails_application"
-maintainer       "YOUR_NAME"
-maintainer_email "YOUR_EMAIL"
+maintainer       "Fabio Napoleoni"
+maintainer_email "f.napoleoni@gmail.com"
 license          "All rights reserved"
-description      "Installs/Configures rails_application"
+description      "Installs/Configures one or more rails application using a standard structure"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.0"
 
