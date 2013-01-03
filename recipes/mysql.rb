@@ -56,7 +56,7 @@ rails_applications.each do |app|
       database_name mysql_data['database']
       # hostname vary if accessed from localhost or through hostname
       host %w(localhost 127.0.0.1).include?(mysql_data['host']) ? 'localhost' : node['fqdn']
-      privileges mysql_data['privileges'] || :all
+      privileges mysql_data['privileges'] || [:all]
       action :grant
     end
   end
