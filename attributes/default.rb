@@ -7,6 +7,11 @@ default[:rails_application][:user] = 'rails'
 default[:rails_application][:group] = 'rails'
 # Rails user home directory
 default[:rails_application][:home] = '/var/rails'
+# Other settings for rails user
+default[:rails_application][:ssh_keygen] = false
+default[:rails_application][:ssh_keys] = []
+default[:rails_application][:shell] = '/bin/bash'
+
 # This directory is used to hold all the applications
 default[:rails_application][:apps_path] = default[:rails_application][:home]
 

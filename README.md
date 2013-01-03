@@ -28,11 +28,17 @@ Here are the configuration attributes used in this cookbooks
 
 ### default.rb
 
-* `node['rails_application']['apps_path']` - Location for storing rails applications.
 * `node['rails_application']['user']` - User that Rails applications will run as.
 * `node['rails_application']['group]` - Group for Rails applications.
 * `node['rails_application']['home']` - Home directory for the created user
+* `node['rails_application']['apps_path']` - Location for storing rails applications (default `node['rails_application']['home']`).
 * `node['rails_application']['applications_bag']` - Databag name for applications
+
+Other settings for rails user:
+
+* `node[:rails_application][:ssh_keygen]` - Whether to generate a key pair for rails user (default false)
+* `node[:rails_application][:ssh_keys]` - Rails user authorized ssh keys (default `[]`)
+* `node[:rails_application][:shell]` - Rails user shell (default `'/bin/bash'`)
 
 Nginx related attributes
 
@@ -41,6 +47,16 @@ Nginx related attributes
 New Relic related attributes
 
 * `node['rails_application']['new_relic']['license_key']` - Used with New Relic Server Monitor
+
+### rvm.rb
+
+This file contains attributes for configuring RVM.
+
+* `node['rails_application']['use_rvm']` - If true rvm will be installed for the rails user (default `false`)
+* `node['rails_application']['rvm_install_type']` - RVM install type (default `'user'`)
+
+Other attributes in this file are used by [Fletcher Nichol rvm cookbook](https://github.com/fnichol/chef-rvm), see its
+ README for details on them.
 
 Recipes
 =======
@@ -108,6 +124,7 @@ Include the recipe on your node or role that needs execution of rails applicatio
 Dependencies
 ============
 
+* `user`: user cookbook which works in solo mode and allows to configure user public keys
 * `nginx`: opscode nginx cookbook used in `rails_application::nginx`
 * `apt`: opscode apt cookbook, used in `rails_application::new_relic`
 * `mysql`: opscode mysql cookbook, used in `rails_application::mysql`
