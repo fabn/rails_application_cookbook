@@ -48,7 +48,9 @@ Recipes
 This cookbook provides two main recipes for installing and configuring rails applications.
 
 * default.rb: This recipe is used to prepare the target machine to allow
- execution of rails applications
+ execution of rails applications. Optionally install rvm if `node[:rails_application][:use_rvm]` is true
+ (false by default). RVM installation can be tuned with node attributes, see excellent
+ [Fletcher Nichol rvm cookbook](https://github.com/fnichol/chef-rvm) for details.
 * nginx.rb: This recipe is used to configure nginx as reverse proxy for the
  rails applications installed
 * new_relic.rb: This recipe is used to install the [New Relic Server Monitor](https://newrelic.com/docs/server/) software

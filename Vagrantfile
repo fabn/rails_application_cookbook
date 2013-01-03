@@ -51,6 +51,9 @@ Vagrant::Config.run do |config|
     chef.data_bags_path = "data_bags"
 
     chef.json = {
+      :rails_application => {
+        :use_rvm => true
+      },
       :mysql => {
         :server_root_password => 'rootpass',
         :server_debian_password => 'debpass',

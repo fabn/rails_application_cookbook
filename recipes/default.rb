@@ -39,3 +39,13 @@ data_bag(bag_name).each do |app|
     mode '0755'
   end
 end
+
+# Install rvm if requested
+if node[:rails_application][:use_rvm]
+  # install type from configuration
+  type = %w(user system).include?(node[:rails_application][:rvm_install_type]) ?
+      node[:rails_application][:rvm_install_type] : 'user'
+  Chef::Log.info "Installing rvm with \"rvm::#{type}\" recipe as requested"
+  # install using rvm cookbook
+  include_recipe "rvm::#{type}"
+end
