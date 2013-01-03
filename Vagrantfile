@@ -61,7 +61,8 @@ Vagrant::Config.run do |config|
     chef.run_list = [
       "apt",
       "recipe[rails_application::nginx]",
-      "recipe[rails_application::mysql]"
+      "recipe[rails_application::mysql]",
+      "recipe[rails_application::memcached]"
     ]
   end
 end

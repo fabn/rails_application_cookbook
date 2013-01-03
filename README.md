@@ -53,6 +53,7 @@ This cookbook provides two main recipes for installing and configuring rails app
  rails applications installed
 * new_relic.rb: This recipe is used to install the [New Relic Server Monitor](https://newrelic.com/docs/server/) software
 * mysql.rb: This recipe configures MySQL database database and users for the given applications
+* memcached.rb: This recipe install and configure memcached if required be at least one application
 
 Data Bags
 =========
@@ -65,6 +66,7 @@ is rails_applications, it could be configured using bags like this one:
       "app_name"    : "my_app_name",
       "server_name" : "www.example.org",
       "aliases"     : [],
+      "memcached"   : true,
       "mysql": {
           "host"      : "localhost",
           "database"  : "database_name",
@@ -104,6 +106,7 @@ Dependencies
 * `mysql`: opscode mysql cookbook, used in `rails_application::mysql`
 * `database`: opscode database cookbook, used in `rails_application::mysql`
 * `mysql_charset`: mysql charset cookbook, used in `rails_application::mysql`
+* `memcached`: memcached cookbook, used in `rails_application::memcached`
 
 License and Author
 ==================
