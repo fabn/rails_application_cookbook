@@ -8,6 +8,7 @@
 include_recipe "apt"
 
 unless node[:rails_application][:new_relic][:license_key]
+  Chef::Log.fatal("License key is missing, please provide a valid value for node[:rails_application][:new_relic][:license_key]")
   raise ArgumentError, "License key is missing, please provide a valid value for node[:rails_application][:new_relic][:license_key]"
 end
 
