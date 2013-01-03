@@ -55,6 +55,9 @@ This cookbook provides two main recipes for installing and configuring rails app
 * mysql.rb: This recipe configures MySQL database database and users for the given applications
 * memcached.rb: This recipe install and configure memcached if required be at least one application
 
+* all.rb: This recipe include all the other recipes. Other recipe execution is controlled by data in databags, so they
+ won't always be executed (e.g. if no application specifies memcached: true, memcached won't be installed).
+
 Data Bags
 =========
 
@@ -92,6 +95,8 @@ be something that can be used for this purpose. It should be unique across all a
 The whole `mysql` block is used to configure database and user for the application.
 
 `admin_credentials` are used to actually create the user. If not given defaults are used.
+
+`memcached` flag tells whether the app uses memcached and if it should be installed.
 
 Usage
 =====
