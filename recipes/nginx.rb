@@ -8,9 +8,9 @@
 #
 
 # include default recipe from cookbook
-include_recipe "rails_application::default"
+include_recipe 'rails_application::default'
 # install and enable nginx server from packages
-include_recipe "nginx"
+include_recipe 'nginx'
 
 # Fetch applications bag name
 bag_name = node[:rails_application][:applications_bag]
@@ -27,8 +27,8 @@ data_bag(bag_name).each do |app|
   template "#{node['nginx']['dir']}/sites-available/#{app_name}" do
     # configure the template file
     source 'nginx_vhost.erb'
-    owner "root"
-    group "root"
+    owner 'root'
+    group 'root'
     mode 0644
     # build server name from data bag configuration items
     server_names = [app_data['server_name']]

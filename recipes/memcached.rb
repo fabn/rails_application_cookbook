@@ -11,8 +11,8 @@ bag_name = node[:rails_application][:applications_bag]
 rails_applications = data_bag_search(bag_name)
 
 if rails_applications.any? { |app| app['memcached'] }
-  include_recipe "memcached"
-  service "memcached" do
+  include_recipe 'memcached'
+  service 'memcached' do
     action [:enable, :start]
   end
 end

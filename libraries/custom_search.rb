@@ -4,7 +4,7 @@ module RailsApplication
     # Custom version of data bag search, to be used also in chef solo
     def data_bag_search bag, query = {}
       if Chef::Config[:solo]
-        Chef::Log.info("This recipe uses search. Will use a restricted version of search")
+        Chef::Log.info('This recipe uses search. Will use a restricted version of search')
         # retrieve all elements from the given databag
         all_items = data_bag(bag).map { |app| data_bag_item(bag, app) }
         all_items.select { |item| match_simple_query(item, query) }

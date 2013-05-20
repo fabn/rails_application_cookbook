@@ -6,7 +6,7 @@
 #
 
 # used for users and databases creation
-include_recipe "database::mysql"
+include_recipe 'database::mysql'
 
 # Fetch applications bag name
 bag_name = node[:rails_application][:applications_bag]
@@ -24,7 +24,7 @@ def admin_credentials data_bag_item
   end
   # use defaults where data not provided
   {
-      :host => "localhost", :username => 'root',
+      :host => 'localhost', :username => 'root',
       :password => node['mysql']['server_root_password']
   }.merge(given)
 end
@@ -32,8 +32,8 @@ end
 # If there is an app which uses localhost (or equivalent) as database
 if rails_applications.any? { |app| app['mysql'] && [node['fqdn'], 'localhost', '127.0.0.1'].include?(admin_credentials(app)[:host]) }
   # configure it through node attributes
-  include_recipe "mysql::server"
-  include_recipe "mysql_charset"
+  include_recipe 'mysql::server'
+  include_recipe 'mysql_charset'
 end
 
 # create application database and users from databag items
