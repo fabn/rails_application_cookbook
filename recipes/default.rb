@@ -23,7 +23,7 @@ directory node[:rails_application][:apps_path] do
   owner node[:rails_application][:user]
   group node[:rails_application][:group]
   mode '0755'
-end if node[:rails_application][:apps_path] != node[:rails_application][:home]
+end
 
 # Fetch applications bag name
 bag_name = node[:rails_application][:applications_bag]
