@@ -59,7 +59,7 @@ define :rails_application, :enable => true do
       # hostname vary if accessed from localhost or through hostname
       host %w(localhost 127.0.0.1).include?(mysql_data['host']) ? 'localhost' : node['fqdn']
       privileges mysql_data['privileges'] || [:all]
-      action :create
+      action :grant
     end
   end
 
