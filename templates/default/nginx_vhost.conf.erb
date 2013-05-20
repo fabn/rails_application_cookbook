@@ -9,7 +9,7 @@ server {
 
   keepalive_timeout 5;
 
-  root <%= @app_path -%>/current/public;
+  root <%= @app_path -%>;
 
   # Maintenance mode enabled if maintenance file is found
   if (-f $document_root/system/maintenance.html) {

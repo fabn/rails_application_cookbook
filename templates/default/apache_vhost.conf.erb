@@ -1,0 +1,58 @@
+<VirtualHost *:<%= @params[:port] || 80 -%>>
+    <Directory <%= @params[:document_root] -%>>
+        Options FollowSymLinks
+        AllowOverride <%= [@params[:allow_override] || 'None' ].flatten.join ' ' %>
+        Order allow,deny
+        Allow from All
+    </Directory>
+
+    DocumentRoot <%= @params[:document_root] %>
+    ServerName <%= @params[:server_name] %>
+    ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
+
+    ErrorLog ${APACHE_LOG_DIR}/<%= @params[:name] %>-error.log
+    CustomLog ${APACHE_LOG_DIR}/<%= @params[:name] %>-access.log combined
+
+    # Gzip/Deflate
+    # http://fluxura.com/2006/5/19/apache-for-static-and-mongrel-for-rails-with-mod_deflate-and-capistrano-support
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/javascript text/css application/x-javascript
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+    # Used for rails assets pipeline
+    <LocationMatch "^/assets/.*$">
+        Header unset ETag
+        FileETag None
+        # RFC says only cache for 1 year
+        ExpiresActive On
+        ExpiresDefault "access plus 1 year"
+    </LocationMatch>
+
+    RewriteEngine On
+
+    # Canonical hostname
+    RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name].gsub('.', '\.') %> [NC]
+    RewriteCond %{HTTP_HOST}   !^$
+    RewriteRule ^/(.*)         http://<%= @params[:server_name] %>/$1 [L,R=permanent]
+
+    # Check for maintenance file and redirect all requests
+    RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+    RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+    RewriteRule ^.*$ /system/maintenance.html [L]
+
+    # Handle all static files and proxy requests for non existant path
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -f
+    RewriteRule ^.*$ - [NC,L]
+    RewriteRule ^.*$ http://localhost:<%= @params[:proxy_port] -%>%{REQUEST_URI}  [P]
+
+    ProxyPassReverse  /  http://localhost:<%= @params[:proxy_port] -%>/
+    ProxyRequests     Off
+
+    # Local reverse proxy authorization override
+    # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
+    <Proxy http://localhost:<%= @params[:proxy_port] -%>/*>
+            Order deny,allow
+            Allow from all
+    </Proxy>
+</VirtualHost>

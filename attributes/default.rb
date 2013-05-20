@@ -23,3 +23,12 @@ default[:rails_application][:nginx][:socket_path] = '/tmp'
 
 # Newrelic attributes
 default[:rails_application][:new_relic][:license_key] = false
+
+# Default attributes for dependent components
+default[:rails_application][:mysql_admin_credentials] = {
+    host: 'localhost',
+    username: 'root',
+    password: node[:mysql][:server_root_password]
+}
+
+default[:memcached][:listen] = '127.0.0.1'

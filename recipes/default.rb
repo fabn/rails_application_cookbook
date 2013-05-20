@@ -24,30 +24,3 @@ directory node[:rails_application][:apps_path] do
   group node[:rails_application][:group]
   mode '0755'
 end
-
-# Fetch applications bag name
-bag_name = node[:rails_application][:applications_bag]
-
-# create application folders provided as data_bag items
-data_bag(bag_name).each do |app|
-  # fetch data from item
-  app_data = data_bag_item(bag_name, app)
-  # find an usable folder name
-  app_name = app_data['app_name'] || app_data['id']
-  # create folder for application
-  directory "#{node[:rails_application][:apps_path]}/#{app_name}" do
-    owner node[:rails_application][:user]
-    group node[:rails_application][:group]
-    mode '0755'
-  end
-end
-
-# Install rvm if requested
-if node[:rails_application][:use_rvm]
-  # install type from configuration
-  type = %w(user system).include?(node[:rails_application][:rvm_install_type]) ?
-      node[:rails_application][:rvm_install_type] : 'user'
-  Chef::Log.info "Installing rvm with \"rvm::#{type}\" recipe as requested"
-  # install using rvm cookbook
-  include_recipe "rvm::#{type}"
-end

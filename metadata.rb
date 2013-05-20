@@ -6,13 +6,14 @@ description      "Installs/Configures one or more rails application using a stan
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.0"
 
-recipe "rails_application", "This recipe prepare the target machine to host any number of rails applications"
+recipe "rails_application", "This cookbook prepares a target machine to host any number of rails applications"
 
 depends 'user', '~> 0.3.0'
 depends 'nginx', '~> 1.1.2'
 depends 'apt', '~> 1.7.0'
-depends 'mysql', '~> 2.1.0'
-depends 'database', '1.3.6'
-depends 'mysql_charset', '~> 0.0.1'
+depends 'mysql', '~> 3.0.0'
+depends 'database', '1.3.8'
 depends 'memcached', '~> 1.1.2'
 depends 'rvm', '~> 0.9.0'
+depends 'newrelic', '~> 0.4.7'
+depends 'apache2', '~> 1.6.0'
