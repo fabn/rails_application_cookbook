@@ -7,6 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
+# Default steps required
+include_recipe 'rails_application'
+
 # Fetch applications bag name
 bag_name = node[:rails_application][:applications_bag]
 
