@@ -42,6 +42,8 @@ define :rails_application, :enable => true do
   # Create mysql user for application if required
   # if app define mysql data create database and user with privileges
   if (mysql_data = options['mysql'])
+    #
+    include_recipe 'database::mysql'
     # create database using admin credentials
     mysql_database mysql_data['database'] do
       connection node[:rails_application][:mysql_admin_credentials]
