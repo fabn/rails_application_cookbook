@@ -61,7 +61,7 @@ Vagrant::Config.run do |config|
     chef.run_list = [
       'apt',
       'recipe[mysql::server]',
-      'recipe[rails_application::data_bag]'
+      'recipe[rails_application::search]'
     ]
   end
 end
