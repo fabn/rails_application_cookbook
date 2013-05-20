@@ -10,7 +10,6 @@ define :rails_application, :enable => true do
       'rvm' => 'user',
       'redis' => false,
       'memcached' => false,
-      'newrelic_sysmon' => false,
       'capistrano' => true,
       'frontend' => 'nginx',
       'mysql' => false
@@ -39,9 +38,6 @@ define :rails_application, :enable => true do
     # install using rvm cookbook
     include_recipe "rvm::#{options['rvm']}"
   end
-
-  # Newrelic sysmond tool, needs license key as attribute
-  include_recipe 'newrelic' if options['newrelic_sysmond']
 
   # Create mysql user for application if required
   # if app define mysql data create database and user with privileges
