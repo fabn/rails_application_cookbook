@@ -27,8 +27,8 @@ define :rails_application, :enable => true do
   # Memcached
   include_recipe 'memcached' if options['memcached']
 
-  # Redis
-  # include_recipe 'redis' if options[:redis]
+  # Redis server from package
+  package 'redis-server' if options['redis']
 
   # RVM
   # Install rvm if requested
