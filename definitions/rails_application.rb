@@ -66,10 +66,10 @@ define :rails_application, :enable => true do
   # Application variables
   application_path = File.join(node[:rails_application][:apps_path], application_name)
   # Webserver document root, with rails should be pointed to public, optionally using capistrano layout
-  document_root = File.join(options[:capistrano] ? File.join(application_path, 'current') : application_path, 'public')
+  document_root = File.join(options['capistrano'] ? File.join(application_path, 'current') : application_path, 'public')
 
   # Configure frontend for the application
-  case options[:frontend]
+  case options['frontend']
     when 'nginx'
       # install and enable nginx server from packages
       include_recipe 'nginx'
