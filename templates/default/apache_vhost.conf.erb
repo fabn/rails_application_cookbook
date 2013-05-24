@@ -1,17 +1,24 @@
 <VirtualHost *:<%= @params[:port] || 80 -%>>
-    <Directory <%= @params[:document_root] -%>>
-        Options FollowSymLinks
-        AllowOverride <%= [@params[:allow_override] || 'None' ].flatten.join ' ' %>
-        Order allow,deny
-        Allow from All
-    </Directory>
-
-    DocumentRoot <%= @params[:document_root] %>
     ServerName <%= @params[:server_name] %>
     ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
+    DocumentRoot <%= @params[:document_root] %>
 
-    ErrorLog ${APACHE_LOG_DIR}/<%= @params[:name] %>-error.log
-    CustomLog ${APACHE_LOG_DIR}/<%= @params[:name] %>-access.log combined
+    <Directory <%= @params[:document_root] %>>
+        Options <%= [@params[:directory_options] || 'FollowSymLinks' ].flatten.join ' ' %>
+        AllowOverride <%= [@params[:allow_override] || 'None' ].flatten.join ' ' %>
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    <%- if @params[:ssl] -%>
+    SSLEngine On
+    SSLCertificateFile <%= File.join(node['ssl']['certs_dir'], "#{@params[:ssl_cert]}.crt") %>
+    SSLCertificateKeyFile <%= File.join(node['ssl']['keys_dir'], "#{@params[:ssl_cert]}.key") %>
+    SSLCertificateChainFile <%= File.join(node['ssl']['certs_dir'], "#{@params[:ssl_cert]}.chain.crt") %>
+    <%- end -%>
+
+    ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
+    CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
 
     # Gzip/Deflate
     # http://fluxura.com/2006/5/19/apache-for-static-and-mongrel-for-rails-with-mod_deflate-and-capistrano-support
@@ -56,3 +63,20 @@
             Allow from all
     </Proxy>
 </VirtualHost>
+
+<%- if @params[:ssl] -%>
+# Redirect only host on port 80
+<VirtualHost *:80>
+  ServerName <%= @params[:server_name] %>
+  ServerAlias <% (@params[:server_aliases] || []).each do |a| %><%= a %> <% end %>
+
+  LogLevel info
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+
+  # Force use of SSL
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*) https://%{SERVER_NAME}$1 [R,L]
+</VirtualHost>
+<%- end -%>

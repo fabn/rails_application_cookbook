@@ -11,7 +11,7 @@ define :rails_application, :enable => true do
       'redis' => false,
       'memcached' => false,
       'capistrano' => true,
-      'frontend' => 'nginx',
+      'frontend' => 'apache',
       'mysql' => false
   }.merge(params[:application_config])
 
@@ -19,7 +19,7 @@ define :rails_application, :enable => true do
   directory "#{node[:rails_application][:apps_path]}/#{application_name}" do
     owner node[:rails_application][:user]
     group node[:rails_application][:group]
-    mode '0755'
+    mode '2755'
   end
 
   # Install needed stuff for this rails application
@@ -91,6 +91,11 @@ define :rails_application, :enable => true do
       # enable vhost in nginx
       nginx_site application_name
     when 'apache'
+      # Support for ssl
+      if options['ssl']
+        include_recipe 'ssl'
+        apache_module :ssl
+      end
       # Apache definition
       web_app application_name do
         template 'apache_vhost.conf.erb'
@@ -99,7 +104,11 @@ define :rails_application, :enable => true do
         server_aliases options['aliases'] if options['aliases'] && options['aliases'].any?
         document_root document_root
         # Apache virtual host based on port if given (default 80)
-        port options['apache']['port'] if options['apache']['port']
+        port !options['ssl'] ? 80 : 443
+        # SSL support in template
+        ssl options['ssl']
+        # SSL certificate base name as used in ssl recipe
+        ssl_cert options['ssl_cert'].gsub('_', '.') if options['ssl_cert']
         # When apache is used with mod_proxy the proxy port should be set in
         # unicorn config and apache vhost config
         proxy_port options['apache']['proxy_port']
