@@ -24,3 +24,11 @@ directory node[:rails_application][:apps_path] do
   group node[:rails_application][:group]
   mode '0755'
 end
+
+# add users to the group if given
+group node[:rails_application][:group] do
+  members node[:rails_application][:group_users]
+
+  only_if { node[:rails_application][:group_users].any? }
+end
+

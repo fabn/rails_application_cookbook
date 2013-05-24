@@ -5,6 +5,7 @@
 
 default[:rails_application][:user] = 'rails'
 default[:rails_application][:group] = 'rails'
+default[:rails_application][:group_users] = []
 # Rails user home directory
 default[:rails_application][:home] = '/var/rails'
 # Other settings for rails user
