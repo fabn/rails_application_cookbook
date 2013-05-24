@@ -19,7 +19,7 @@ define :rails_application, :enable => true do
   directory "#{node[:rails_application][:apps_path]}/#{application_name}" do
     owner node[:rails_application][:user]
     group node[:rails_application][:group]
-    mode '2755'
+    mode '2775'
   end
 
   # Install needed stuff for this rails application
