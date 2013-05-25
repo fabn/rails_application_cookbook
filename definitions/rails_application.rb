@@ -96,9 +96,10 @@ define :rails_application, :enable => true do
         include_recipe 'ssl'
         apache_module :ssl
       end
-      # Add apache modules used in configuration
-      apache_module :expires
-      apache_module :proxy
+      # Enable apache modules used in configuration
+      [:proxy, :proxy_http, :expires].each do |mod|
+        apache_module mod
+      end
       # Apache definition
       web_app application_name do
         template 'apache_vhost.conf.erb'
