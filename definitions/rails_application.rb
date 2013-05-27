@@ -40,25 +40,20 @@ define :rails_application, :enable => true do
   end
 
   # Create mysql user for application if required
-  # if app define mysql data create database and user with privileges
   if (mysql_data = options['mysql'])
-    #
+    # require the gem to create users
     include_recipe 'database::mysql'
-    # create database using admin credentials
-    mysql_database mysql_data['database'] do
-      connection node[:rails_application][:mysql_admin_credentials]
-      encoding mysql_data['encoding'] || 'utf8'
-      collation mysql_data['collation'] || 'utf8_general_ci'
-      action :create
-    end
+    # This is required since mysql root password may be initialized later
+    node.set_unless[:rails_application][:mysql_admin_credentials][:password] = node[:mysql][:server_root_password]
     # grant privileges to the given user on the given database
     mysql_database_user mysql_data['username'] do
-      connection node[:rails_application][:mysql_admin_credentials]
+      # Get credentials from json or uses cookbook default
+      connection mysql_data['connection'] || node[:rails_application][:mysql_admin_credentials]
       password mysql_data['password']
       database_name mysql_data['database']
-      # hostname vary if accessed from localhost or through hostname
-      host %w(localhost 127.0.0.1).include?(mysql_data['host']) ? 'localhost' : node['fqdn']
-      privileges mysql_data['privileges'] || [:all]
+      # use provided or defaults if nil
+      host mysql_data['host']
+      privileges mysql_data['privileges']
       action :grant
     end
   end
