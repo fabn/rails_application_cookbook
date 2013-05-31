@@ -99,7 +99,7 @@ define :rails_application, :enable => true do
       web_app application_name do
         template 'apache_vhost.conf.erb'
         # any param given here is forwarded to the template under params hash
-        server_name application_name
+        server_name options['server_name']
         server_aliases options['aliases'] if options['aliases'] && options['aliases'].any?
         document_root document_root
         # Apache virtual host based on port if given (default 80)
