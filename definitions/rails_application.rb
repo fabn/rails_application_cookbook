@@ -22,6 +22,18 @@ define :rails_application, :enable => true do
     mode '2770'
   end
 
+  # Add logrotate configuration file for this application, inspired by unicorn suggested config
+  logrotate_app application_name do
+    path "#{node[:rails_application][:apps_path]}/#{application_name}/shared/log/*.log"
+    frequency 'daily'
+    rotate 180
+    options 'missingok compress delaycompress notifempty'
+    lastaction <<-SH
+    pid=#{node[:rails_application][:apps_path]}/#{application_name}/shared/pids/unicorn.pid
+    test -s $pid && kill -USR1 "$(cat $pid)"
+    SH
+  end
+
   # Install needed stuff for this rails application
 
   # Memcached
