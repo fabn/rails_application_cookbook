@@ -34,6 +34,17 @@ define :rails_application, :enable => true do
     SH
   end
 
+  # Add su paremeters for logrotate > 3.8.0
+  ruby_block 'add su option to logrotate' do
+    block do
+      file = Chef::Util::FileEdit.new("/etc/logrotate.d/#{application_name}")
+      file.insert_line_after_match 'endscript', "  su #{node[:rails_application][:user]} #{node[:rails_application][:group]}"
+      file.write_file
+    end
+    # Not if already there
+    not_if "grep 'su #{node[:rails_application][:user]}' /etc/logrotate.d/#{application_name}"
+  end
+
   # Install needed stuff for this rails application
 
   # Memcached
