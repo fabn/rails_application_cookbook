@@ -19,7 +19,7 @@ define :rails_application, :enable => true do
   directory "#{node[:rails_application][:apps_path]}/#{application_name}" do
     owner node[:rails_application][:user]
     group node[:rails_application][:group]
-    mode '2770'
+    mode '2775'
   end
 
   # Add logrotate configuration file for this application, inspired by unicorn suggested config
