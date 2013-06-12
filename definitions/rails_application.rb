@@ -40,6 +40,8 @@ define :rails_application, :enable => true do
       file = Chef::Util::FileEdit.new("/etc/logrotate.d/#{application_name}")
       file.insert_line_after_match 'endscript', "  su #{node[:rails_application][:user]} #{node[:rails_application][:group]}"
       file.write_file
+      # Remove the backup copy to avoid logrotate complaints
+      ::File.delete "/etc/logrotate.d/#{application_name}.old"
     end
     # Not if already there
     not_if "grep 'su #{node[:rails_application][:user]}' /etc/logrotate.d/#{application_name}"
