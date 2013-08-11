@@ -39,6 +39,7 @@ Other settings for rails user:
 * `node[:rails_application][:ssh_keygen]` - Whether to generate a key pair for rails user (default false)
 * `node[:rails_application][:ssh_keys]` - Rails user authorized ssh keys (default `[]`)
 * `node[:rails_application][:shell]` - Rails user shell (default `'/bin/bash'`)
+* `node[:rails_application][:enable_foreman_as_root]` - If true rails user will have sudo privileges for `foreman` command (default `true`)
 
 Nginx related attributes
 

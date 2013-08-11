@@ -32,3 +32,12 @@ group node[:rails_application][:group] do
   only_if { node[:rails_application][:group_users].any? }
 end
 
+# Enable application user to execute foreman commands as root
+if node[:rails_application][:enable_foreman_as_root]
+  sudo 'foreman' do
+    user node[:rails_application][:user]
+    runas 'root'
+    commands %w(foreman)
+    nopasswd true
+  end
+end
