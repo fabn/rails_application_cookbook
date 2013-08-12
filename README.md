@@ -39,7 +39,7 @@ Other settings for rails user:
 * `node[:rails_application][:ssh_keygen]` - Whether to generate a key pair for rails user (default false)
 * `node[:rails_application][:ssh_keys]` - Rails user authorized ssh keys (default `[]`)
 * `node[:rails_application][:shell]` - Rails user shell (default `'/bin/bash'`)
-* `node[:rails_application][:enable_foreman_as_root]` - If true rails user will have sudo privileges for `foreman` command (default `true`)
+* `node[:rails_application][:enable_foreman_upstart_support]` - If true rails foreman support will be enabled (default `true`)
 
 Nginx related attributes
 
@@ -132,6 +132,17 @@ Dependencies
 * `database`: opscode database cookbook, used in `rails_application::mysql`
 * `mysql_charset`: mysql charset cookbook, used in `rails_application::mysql`
 * `memcached`: memcached cookbook, used in `rails_application::memcached`
+* `sudo`: sudo cookbook, used with foreman support
+
+Foreman Support
+===============
+
+If the [foreman](http://ddollar.github.io/foreman/) support is enabled (true by default) a folder named `/etc/init/sites`
+ will be created and `node['rails_application']['user']` user will have write permissions to create services in this folder.
+ Also the same user will have sudo privileges to restart services in that folder, i.e. it will be able to execute
+ `start|stop|restart|reload sites/xxx` with root privileges.
+
+This is useful to deploy applications with foreman and capistrano with [this capistrano recipe](https://github.com/fabn/capistrano-foreman)
 
 License and Author
 ==================

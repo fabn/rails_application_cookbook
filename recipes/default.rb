@@ -33,11 +33,22 @@ group node[:rails_application][:group] do
 end
 
 # Enable application user to execute foreman commands as root
-if node[:rails_application][:enable_foreman_as_root]
-  sudo 'foreman' do
+if node[:rails_application][:enable_foreman_upstart_support]
+  directory '/etc/init/sites' do
+    owner 'root'
+    group node[:rails_application][:group]
+    mode '2775'
+  end
+  # Management tools
+  management_commands = %w(start stop restart status reload).map do |cmd|
+    # allowed only with a `sites/\w+` argument
+    "/sbin/#{cmd} sites/*"
+  end
+  # Enable user to restart services in sites folder
+  sudo "#{node[:rails_application][:user]}_services" do
     user node[:rails_application][:user]
     runas 'root'
-    commands %w(foreman)
+    commands management_commands
     nopasswd true
   end
 end

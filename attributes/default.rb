@@ -35,4 +35,4 @@ default[:rails_application][:mysql_admin_credentials] = {
 default[:memcached][:listen] = '127.0.0.1'
 
 # Foreman support for rails applications
-default[:rails_application][:enable_foreman_as_root] = true
+default[:rails_application][:enable_foreman_upstart_support] = true
